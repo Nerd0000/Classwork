@@ -1,0 +1,84 @@
+.div-introduction-title h1{
+    max-width: 75vw;
+    font-size: 50px;
+}
+
+.div-introduction-title h2{
+    font-size: 25px;
+}
+
+.div-introduction-title h3{
+    text-align: justify;
+    margin-left: 25px;
+    margin-top: 15px;
+    color: black;
+    max-width: 75vw;
+    font-size: 19px;
+}
+
+.div-alt {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 0px;
+}
+
+.alt-login-container {
+    display: inline-block;
+    align-items: center;
+    margin-right: 10px;
+    border: steelblue 2px solid;
+    box-shadow: black;
+}
+
+.alt-login-container button, .alt-login-container a{
+    border-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px 12px;
+    text-decoration: none;
+    background-color: white;
+    color: steelblue;
+}
+
+.alt-login-container:hover button, .alt-login-container:hover a{
+    background-color: steelblue;
+    color: white;
+}
+
+.alt-login-container h3{
+    margin-left: 8px;
+    font-size: 22px;
+}
+
+.alt-login-container .no-margin-lef-h3 {
+    margin-left: 0px;
+    font-size: 22px;
+}
+
+.git {
+    border: black 2px solid;
+}
+
+.git button, .git a{
+    color: black;
+}
+
+.git:hover button, .git:hover a{
+    background-color: black;
+    color: white;
+}
+
+.enter {
+    border: steelblue 2px solid;
+}
+
+.enter button, .enter a{
+    color: steelblue;
+}
+
+.enter:hover button, .enter:hover a{
+    background-color: steelblue;
+    color: white;
+}

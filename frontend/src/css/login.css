@@ -1,0 +1,105 @@
+.login-box-container {
+    background-color: white;
+}
+
+.login-box {
+    display: inline-flex;
+    flex-direction: column;
+    background-color: rgb(250, 250, 250);
+    height: auto;
+    padding: 20px;
+}
+
+.login-box input{
+    border: steelblue solid 3px;
+    color: rgb(77, 151, 211);
+    font-size: 20px;
+    height: 30px;
+    background-color: white;
+    padding: 15px 5px 12px 5px;
+    width: 350px;
+}
+
+.login-box div + input + div {
+    margin-top: 15px;
+}
+
+.login-box-input-label {
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+.login-box-title {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.login-box-subtitle {
+    font-size: 25px;
+    margin-left: 10px;
+    color: rgb(93, 151, 199);
+}
+
+.login-box-button-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 15px;
+}
+
+.login-box-button {
+    display: inline-block;
+    align-items: center;
+    margin-right: 10px;
+    border: steelblue 2px solid;
+    box-shadow: black;
+}
+
+.login-box-button button, .login-box-button a{
+    border-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px 12px;
+    text-decoration: none;
+    height: 35px;
+    background-color: white;
+    color: steelblue;
+}
+
+.login-box-button:hover button, .login-box-button:hover a{
+    background-color: steelblue;
+    color: white;
+}
+
+.red-login {
+    border: rgb(180, 70, 70) 2px solid;
+    box-shadow: rgb(180, 70, 70);
+}
+
+.red-login button, .red-login a{
+    background-color: white;
+    color: rgb(180, 70, 70);
+}
+
+.red-login:hover button, .red-login:hover a{
+    background-color: rgb(180, 70, 70);
+    color: white;
+}
+
+.red-login-update-warning {
+    background-color: rgb(224, 137, 137);
+    font-size: 18px;
+    padding: 8px;
+    color: white;
+    margin: 10px 0px;
+    font-weight: 500;
+}
+
+.red-login-update-warning strong{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+

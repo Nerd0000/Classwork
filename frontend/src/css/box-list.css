@@ -1,0 +1,78 @@
+.container-box-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-box-list ul{
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-right: 15px;
+    margin-top:  15px;
+    margin-bottom: 0px;
+}
+
+.container-box-list ul li{
+    margin-bottom: 15px;
+    margin-left: 15.5px;
+    width: 32%;
+}
+
+.container-box-list ul li button {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-style: none;
+    min-height: 100%;
+    text-align: start;
+    padding-bottom: 20px;
+    background-color: whitesmoke;
+    justify-content: space-between;
+    transition: background-color .8s, box-shadow .8s;
+}
+
+.container-box-list ul li button:hover {
+    transition: background-color .8s, box-shadow .8s;
+    background-color: steelblue;
+}
+
+.container-box-list ul li button:hover h3{
+    color: white;
+}
+
+.container-box-list ul li button:hover h4{
+    color: rgb(224, 224, 224);
+}
+
+.container-box-list ul li button:hover div {
+    color: white;
+}
+
+.repos-name {
+    text-transform: capitalize;
+    font-size: 25px;
+    margin: 20px 20px 0px 20px;
+    color: steelblue;
+}
+
+.repos-description {
+    font-size: 15px;
+    text-align: justify;
+    margin: 2px 20px 0px 20px;
+    color: rgb(1, 53, 95);
+}
+
+.repos-div-language {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 20px 0px 20px;
+}
+
+.repos-language {
+    font-size: 15px;
+    text-align: start;
+    margin-left: 5px;
+}

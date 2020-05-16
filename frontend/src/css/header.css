@@ -1,0 +1,193 @@
+.div-header {
+    height: 2vh;
+    background-color: steelblue;
+}
+
+
+.div-header-container {
+    display: flex;
+    align-items: center;
+    height: 10vh;
+    background-color: rgb(98, 167, 224);
+}
+
+.second-div-header-container {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+    height: 10vh;
+    background-color: rgb(77, 151, 211);
+}
+
+.ajust-second-header {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.button-expand {
+    border-style: solid;
+    outline-style: none;
+    border-width: 0px;
+    border-right-width: 5px;
+    border-color: rgb(77, 151, 211);
+    transition: background-color 1s;
+}
+
+.button-expand svg {
+    color: white;
+    transition: color 1s;
+}
+
+.button-expand:hover {
+    background-color: white;
+    transition: background-color 1s;
+}
+
+.button-expand:hover svg {
+    color: rgb(77, 151, 211);
+    transition: color 1s;
+}
+
+.div-header-container img {
+    margin-left: 12px;
+    width: 50px;
+}
+
+.header-title {
+    padding-left: 10px;
+    font-size: 45px;
+    color: white;
+}
+
+.div-user-names {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-real-name {
+    font-size: 26px;
+}
+.user-name {
+    font-size: 18px;
+}
+
+.expansive-lateral {
+    flex-direction: row;
+    top: 0;
+    position: absolute;
+    display: flex;
+    height: 100vh;
+    z-index: 5;
+    transition: left .5s;
+}
+
+.expansive-box {
+    background-color: rgb(77, 151, 211);
+    height: 100vh;
+    width: 30vw;
+    color: white;
+}
+
+.full {
+    height: 100vh;
+}
+
+
+
+
+
+
+
+
+
+
+
+.expansive-box-perfil {
+    display: flex;
+    text-decoration: none;
+    background-color: rgb(114, 182, 238);
+    margin: 10px 20px;
+    border: 2px rgb(80, 148, 204) solid;
+    /*border-radius: 20px;*/
+}
+
+.expansive-box-perfil:hover {
+    background-color: rgb(144, 198, 243);
+}
+
+.expansive-box-perfil img {
+    width: 80px;
+    height: 80px;
+    border: 3px white solid;
+    /*border-radius: 20px;*/
+    margin: 8px;
+}
+
+.expansive-box-perfil-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.div-item-expansive-list {
+    margin: 10px 13px 0px 22px;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+    list-style-type: none;
+}
+
+.div-item-expansive-list ul{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(114, 182, 238);
+    width: 345px;
+    /*border-radius: 20px;*/
+    margin: 0px 10px 10px 0px;
+}
+
+.div-item-expansive-list ul h3{
+    margin: 8px 18px;
+    text-align: end;
+}
+
+
+.div-item-expansive-list ul li{
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    align-items: center;
+}
+
+.div-item-expansive-list-button {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    border: none;
+    justify-content: flex-end;
+    color: white;
+    font-size: 25px;
+    transition: background-color .8s;
+    background-color: rgb(132, 190, 238);
+}
+
+.div-item-expansive-list-button svg {
+    margin: 0px 10px 0px 15px;
+}
+
+.div-item-expansive-list-button:hover{
+    transition: background-color .8s;
+    background-color: rgb(90, 163, 223);
+}
+
+.red {
+    /*border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;*/
+    background-color: rgb(235, 168, 168);
+}
+
+.red:hover {
+    background-color: rgb(228, 141, 141);
+}

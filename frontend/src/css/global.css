@@ -1,0 +1,65 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    font: 400 14px Roboto, sans-serif;
+    background-color: white;
+    -webkit-font-smoothing: antialiased;
+}
+
+Routes {
+    height: 88vh;
+}
+
+h1, h2, h3, h4, h5, h6, img, svg {
+    -moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select:none; 
+    -o-user-select:none;
+    user-select:none;
+}
+
+button, a {
+    cursor: pointer;
+}
+
+.div-global-page-dooble {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-height: 88vh;
+}
+
+.header-is-auth {
+    margin-left: 46px;
+}
+
+.div-global-page {
+    display: inline-block;
+    color: steelblue;
+    flex-direction: column;
+    padding: 25px;
+    height: 88vh;
+}
+
+.with-scroll {
+    display: flex;
+    overflow-y: scroll;
+}
+
+.div-global-page-2 {
+    display: inline-block;
+    flex-direction: column;
+    color: steelblue;
+    max-height: 88vh;
+}
+
+.div-global-page-2 svg{
+    margin: 100px 150px 100px 50px;
+}
+
