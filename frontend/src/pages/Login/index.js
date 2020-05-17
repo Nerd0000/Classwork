@@ -5,7 +5,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import Header from '../../components/header';
 import Logins from '../../components/logins'
 
-
+import queryToStorage from '../../utils/queryToStorage';
 import checkIfIsAuthenticated from '../../utils/checkIfIsAuthenticated';
 
 
@@ -16,6 +16,14 @@ export default function Login(){
     const CLIENT_ID = process.env.REACT_APP_GH_BASIC_CLIENT_ID;
     const STATE_APP = process.env.REACT_APP_STATE;
     const URL = `${GITHUB_AUTH_URL}?client_id=${CLIENT_ID}&state=${STATE_APP}&redirect_uri=http://localhost:3333/git&scope=user%20repo`;
+
+    queryToStorage(sessionStorage, history, location, 'user', 'error');
+
+    if(sessionStorage.getItem('error') === "true"){
+        sessionStorage.removeItem('user');
+        alert("Dados incorretos!");
+        sessionStorage.removeItem('error');
+    }
 
     checkIfIsAuthenticated(sessionStorage, history, location);
 

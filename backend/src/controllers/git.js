@@ -1,11 +1,9 @@
 const axios = require('axios');
 const generateHex = require('../utils/generateHex');
+const dateReturn = require('../utils/dateReturn');
 
 module.exports = {
     async git(req, res) {
-        var dateConsole = new Date();
-        var dateReturn = `${dateConsole.getDay()}/${dateConsole.getMonth()}/${dateConsole.getFullYear()} [${dateConsole.getHours()}:${dateConsole.getMinutes()}] - `;
-
         const GITHUB_AUTH_TOKEN_URL = 'https://github.com/login/oauth/access_token';
         const GITHUB_USER_URL = 'https://api.github.com/user';
         const END_URL = process.env.REACT_APP_URL_FRONT;
@@ -42,7 +40,7 @@ module.exports = {
             TOKEN = response.data.access_token;
         }).catch(function(){
             ERROR = true;
-            console.log(dateReturn + 'Erro no recebimento do tokken');
+            console.log(dateReturn() + 'Erro no recebimento do tokken');
         });
 
         //Pedir dados do usuário para o git
@@ -59,7 +57,7 @@ module.exports = {
             USER = response.data;
         }).catch(function(){
             ERROR = true;
-            console.log(dateReturn + 'Erro no envio do token');
+            console.log(dateReturn() + 'Erro no envio do token');
         });
 
         //Pegar todos os repositórios
@@ -89,7 +87,7 @@ module.exports = {
             }
             USER.repos = JSON.stringify(REPOS);
         }).catch(function(){
-            console.log(dateReturn + 'Erro ao pedir repos do usuário do GIT');
+            console.log(dateReturn() + 'Erro ao pedir repos do usuário do GIT');
         });
 
         //Checar se existe algum usuário no banco de dados com o msm git_id
@@ -122,11 +120,11 @@ module.exports = {
                 USER.teams = JSON.parse(USER.teams);
             }).catch(function(Err){
                 ERROR = true;
-                console.log(dateReturn + 'Erro ao atualziar repositórios do usuário');
+                console.log(dateReturn() + 'Erro ao atualziar repositórios do usuário');
             });
             
         }).catch(async function(response){
-            console.log(dateReturn + 'Erro na checagem de usuários');
+            console.log(dateReturn() + 'Erro na checagem de usuários');
 
             //Criar se não existir
             if(USER.id != null){
@@ -180,7 +178,7 @@ module.exports = {
                     USER.repos = JSON.parse(USER.repos);
                 }).catch(function(err){
                     ERROR = true;
-                    console.log(dateReturn + 'Erro na criação do usuário');
+                    console.log(dateReturn() + 'Erro na criação do usuário');
                 });
             }
         });
@@ -188,8 +186,6 @@ module.exports = {
     },
 
     async gitRepos(req, res) {
-        var dateConsole = new Date();
-        var dateReturn = `${dateConsole.getDay()}/${dateConsole.getMonth()}/${dateConsole.getFullYear()} [${dateConsole.getHours()}:${dateConsole.getMinutes()}] - `;
         var { USER } = req.body;
 
         var REPOS = [];
@@ -218,7 +214,7 @@ module.exports = {
             }
             USER.repos = REPOS;
         }).catch(function(){
-            console.log(dateReturn + 'Erro ao pedir repos do usuário do GIT');
+            console.log(dateReturn() + 'Erro ao pedir repos do usuário do GIT');
         });
 
         res.status(200).json(USER);

@@ -21,7 +21,7 @@ export default function Login(){
     var goToProfile = sessionStorage.getItem('goToProfile');
     var goToProfileCreate = sessionStorage.getItem('goToProfileCreate');
 
-    if(error === true){
+    if(error === "true"){
         history.push('/error');
     }else if(goToProfile === "true"){
         sessionStorage.removeItem('need_password');

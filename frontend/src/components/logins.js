@@ -37,19 +37,19 @@ function Logins(props){
         );
 
         default: return(
-            <form className="login-box-container"> 
+            <form className="login-box-container" action={process.env.REACT_APP_URL_BACK + "/login"} method="post"> 
                 <h1 className="login-box-title">Entrar com Classwork</h1>
                 <div className="login-box">
                     <div className="login-box-input-label">
                         <FaEnvelopeOpenText size={25} color="rgb(77, 151, 211)"/>
                         <h2 className="login-box-subtitle">Email</h2>
                     </div>
-                    <input type="email" className="shadow-theme"/>
+                    <input type="email" className="shadow-theme" name="email" required/>
                     <div className="login-box-input-label">
                         <FaUnlockAlt size={24} color="rgb(77, 151, 211)"/>
                         <h2 className="login-box-subtitle">Senha</h2>
                     </div>
-                    <input type="password" className="shadow-theme"/>
+                    <input type="password" className="shadow-theme" name="password" required/>
                     <div className="login-box-button-container">
                         <div className="login-box-button shadow-theme">
                             <button type="submit"><h3>Entrar</h3></button>

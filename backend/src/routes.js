@@ -11,8 +11,10 @@ routes.post('/user/create', userController.create);
 routes.post('/user/update', userController.update);
 routes.post('/user/updateCredentials', userController.updateCredentials);
 routes.post('/user/updateRepos', userController.updateRepos);
+routes.post('/login', userController.login);
 routes.delete('/user/delete', userController.delete);
 routes.get('/users', userController.list);
+
 
 
 //Git
