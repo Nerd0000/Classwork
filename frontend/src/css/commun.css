@@ -52,6 +52,10 @@
     font-size: 22px;
 }
 
+.no-icon h3 {
+    margin-left: 0px;
+}
+
 .alt-login-container .no-margin-lef-h3 {
     margin-left: 0px;
     font-size: 22px;

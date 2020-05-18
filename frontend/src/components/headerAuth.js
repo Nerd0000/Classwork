@@ -68,16 +68,16 @@ function HeaderAuth(props){
                         <ul className="shadow-theme"><h3>GitHub</h3>{listGitHub}</ul>
 
                         <ul className="shadow-theme"><h3>Opções</h3><li>
-                        {
-                            (sessionStorage.getItem('user') != null)?
+
+                        <Link to="/profile/register" className="div-item-expansive-list-button">
+                            Alterar Credenciais<Icons name="user-lock" size={25} color="white"/></Link>
+
                             <button onClick={() => {
                                 logoutGit(sessionStorage, history, location);
                             }} className="div-item-expansive-list-button red">
-                            Sair<Icons name="exit" size={25} color="white"/></button>:null
-                        }
-                        </li></ul>
-                        
+                            Sair<Icons name="exit" size={25} color="white"/></button>
 
+                        </li></ul>
                     </div>
                 </div>
                 <button onClick={() => {expand()}} className="second-div-header-container ajust-second-header button-expand full">

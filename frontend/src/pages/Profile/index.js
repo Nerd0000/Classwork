@@ -4,11 +4,13 @@ import { useHistory, useLocation } from "react-router-dom";
 import HeaderAuth from '../../components/headerAuth';
 
 import checkIfIsAuthenticated from '../../utils/checkIfIsAuthenticated';
+import queryToStorage from '../../utils/queryToStorage';
 
 export default function Profile(){
     const history = useHistory();
     const location = useLocation();
 
+    queryToStorage(sessionStorage, history, location, 'user');
     checkIfIsAuthenticated(sessionStorage, history, location);
 
     return(

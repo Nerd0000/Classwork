@@ -13,11 +13,11 @@ module.exports = {
         const CODE = req.query.code;
         const SCOPE = "repo, user";
 
+        var NEW = false;
         var TOKEN = '';
         var USER = '';
         var NEED_PASSWORD = true;
         var ERROR = false;
-        var GOTOPROFILE = false;
 
         //Pegar o token do Git
         await axios(
@@ -40,7 +40,7 @@ module.exports = {
             TOKEN = response.data.access_token;
         }).catch(function(){
             ERROR = true;
-            console.log(dateReturn() + 'Erro no recebimento do tokken');
+            console.log(dateReturn() + 'Error in get code from token');
         });
 
         //Pedir dados do usuário para o git
@@ -57,11 +57,15 @@ module.exports = {
             USER = response.data;
         }).catch(function(){
             ERROR = true;
-            console.log(dateReturn() + 'Erro no envio do token');
+            console.log(dateReturn() + 'Error in send token');
         });
 
         //Pegar todos os repositórios
-        var REPOS = [];
+        var REPOS = {
+            data: []
+        };
+        var REPOS_ALL = [];
+
         await axios(
             {   
                 method: 'get',
@@ -74,8 +78,9 @@ module.exports = {
                 }
             }
         ).then(function(response){
+            
             for(var i in response.data){
-                REPOS[i] = {
+                REPOS.data[i] = {
                     id: response.data[i].id,
                     name: response.data[i].name,
                     description: response.data[i].description,
@@ -85,9 +90,9 @@ module.exports = {
                     size: response.data[i].size
                 }
             }
-            USER.repos = JSON.stringify(REPOS);
-        }).catch(function(){
-            console.log(dateReturn() + 'Erro ao pedir repos do usuário do GIT');
+            REPOS_ALL = REPOS.data;
+        }).catch(function(err){
+            console.log(dateReturn() + 'Error in get repos');
         });
 
         //Checar se existe algum usuário no banco de dados com o msm git_id
@@ -97,11 +102,10 @@ module.exports = {
             headers: {
                 'auth': process.env.REACT_APP_DB_IDENTITY,
             },
-        }).then(async function(response){
-            GOTOPROFILE = true;
+        }).then(async function(){
             NEED_PASSWORD = false;
             var git_id = USER.id;
-            var repos = REPOS;
+            var repos = REPOS_ALL;
             await axios({
                 method: 'post',
                 url: process.env.REACT_APP_URL_BACK + '/user/updateRepos',
@@ -118,13 +122,14 @@ module.exports = {
                 USER.urls = JSON.parse(USER.urls);
                 USER.classes = JSON.parse(USER.classes);
                 USER.teams = JSON.parse(USER.teams);
-            }).catch(function(Err){
+                USER.repos = JSON.parse(USER.repos);
+            }).catch(function(){
                 ERROR = true;
-                console.log(dateReturn() + 'Erro ao atualziar repositórios do usuário');
+                console.log(dateReturn() + 'Error in update repos');
             });
             
-        }).catch(async function(response){
-            console.log(dateReturn() + 'Erro na checagem de usuários');
+        }).catch(async function(){
+            console.log(dateReturn() + 'Checking user');
 
             //Criar se não existir
             if(USER.id != null){
@@ -136,7 +141,7 @@ module.exports = {
                 const email =  USER.login + "@classwork.com";
                 const password = "User@" + generateHex();
                 const id_auth = generateHex();
-                const repos = USER.repos;
+                const repos = REPOS_ALL;
                 const urls = [
                     {
                         id: 1,
@@ -175,14 +180,19 @@ module.exports = {
                 }).then(function(response){
                     NEED_PASSWORD = true;
                     USER = response.data; 
-                    USER.repos = JSON.parse(USER.repos);
-                }).catch(function(err){
+                    NEW = true;
+                }).catch(function(){
                     ERROR = true;
-                    console.log(dateReturn() + 'Erro na criação do usuário');
+                    console.log(dateReturn() + 'Error in create user');
                 });
             }
         });
-        res.status(200).redirect(END_URL+`/git/register?error=${ERROR}&need_password=${NEED_PASSWORD}&user=${JSON.stringify(USER)}&goToProfileCreate=${GOTOPROFILE}`);
+
+        if(NEW){
+            return res.status(200).redirect(END_URL+`/profile/register?error=${ERROR}&need_password=${NEED_PASSWORD}&user=${JSON.stringify(USER)}`);
+        }else{
+            return res.status(200).redirect(END_URL+`/profile?user=${JSON.stringify(USER)}`);
+        }
     },
 
     async gitRepos(req, res) {
@@ -214,7 +224,7 @@ module.exports = {
             }
             USER.repos = REPOS;
         }).catch(function(){
-            console.log(dateReturn() + 'Erro ao pedir repos do usuário do GIT');
+            console.log(dateReturn() + 'Error in update token');
         });
 
         res.status(200).json(USER);

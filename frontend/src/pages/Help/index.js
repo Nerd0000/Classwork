@@ -9,11 +9,11 @@ export default function ErrorStatus(){
                 <Header/>
                 <div className="div-global-page with-scroll">
                     <div className="div-introduction-title">
-                        <h1>Dúvidas sobre a conta Classwork?</h1>
+                        <h1>Dúvidas sobre o Classwork?</h1>
                         <h2>Esperamos que isso te ajude bastante! </h2>
                     </div>
                     <div className="div-alt">
-                        <div className="alt-login-container enter shadow-theme">
+                        <div className="alt-login-container enter no-icon shadow-theme">
                             <Link to="/">
                                 <h3>Ok, quero voltar</h3>
                             </Link>

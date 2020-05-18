@@ -103,3 +103,33 @@
     margin-bottom: 8px;
 }
 
+.box-alert-login {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    flex-direction: row;
+    color: white;
+}
+
+.box-alert-login h3{
+    background-color: rgb(180, 70, 70);
+    padding: 22px 20px;
+    max-width: 600px;
+}
+
+.box-alert-login button{
+    border: none;
+    padding: 21px 20px 19px 20px;
+    font-size: 20px;
+    background-color: rgb(224, 137, 137);
+    color: white;
+    text-align: center;
+    justify-content: center;
+    transition: background-color .8s;
+}
+
+.box-alert-login button:hover{
+    background-color: rgb(235, 109, 109);
+    transition: background-color .8s;
+}

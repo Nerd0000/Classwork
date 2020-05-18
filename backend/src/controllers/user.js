@@ -1,28 +1,39 @@
 const connection = require('../database/connection');
 const internalSecurity = require('../utils/internalSecurity');
-const generateHex = require('../utils/generateHex');
 const dateReturn = require('../utils/dateReturn');
 
 module.exports = {
     async login(req, res) {
-        const END_URL = process.env.REACT_APP_URL_FRONT;
-
         const { email, password } = req.body;
         var user = null;
 
-        user = await connection('users').select('*').where("email", email).andWhere("password", password).first();
+        const { auth } = req.headers;
 
-        if(user == null){
-            console.log(dateReturn() + `User credentials is not defined!`);
-            return res.status(404).redirect(END_URL+`/?error=${true}`);
+        if(internalSecurity.checkIsAuthorized(auth)){
+            user = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("email", email).andWhere("password", password).first();
+
+            if(user == null){
+                console.log(dateReturn() + `User credentials is not defined!`);
+                return res.status(404).json({
+                    "message": "Operação inválida",
+                    "origin": "Database",
+                });
+            }
+
+            user.urls = JSON.parse(user.urls);
+            user.classes = JSON.parse(user.classes);
+            user.teams = JSON.parse(user.teams);
+            user.repos = JSON.parse(user.repos);
+
+            console.log(dateReturn() + `User classwork connected!`);
+            return res.status(200).json(user);
+        }else{
+            console.log(dateReturn() + `Unauthorized request has been blocked!`);
+            return res.status(203).json({
+                    "message": "Request não autorizado!",
+                    "origin": "Internal security",
+            });
         }
-
-        user.urls = JSON.parse(user.urls);
-        user.classes = JSON.parse(user.classes);
-        user.teams = JSON.parse(user.teams);
-
-        console.log(dateReturn() + `User classwork connected!`);
-        return res.status(200).redirect(END_URL+`/?error=${false}&user=${JSON.stringify(user)}`);
     },
     async create(req, res) {
         const {git_id, name, real_name, type, avatar, password, id_auth, email } = req.body;
@@ -30,6 +41,7 @@ module.exports = {
         var classes = JSON.stringify(req.body.classes);
         var teams = JSON.stringify(req.body.teams);
         var repos = JSON.stringify(req.body.repos);
+
         const {auth} = req.headers;
 
         if(internalSecurity.checkIsAuthorized(auth)){
@@ -66,7 +78,7 @@ module.exports = {
 
         if(internalSecurity.checkIsAuthorized(auth)){
             if(queryId != null){
-                users = await connection('users').select('*').where("id", queryId).first();
+                users = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("id", queryId).first();
 
                 if(users == null){
                     console.log(dateReturn() + `User [${queryId}] is not defined!`);
@@ -78,9 +90,10 @@ module.exports = {
                 users.urls = JSON.parse(users.urls);
                 users.classes = JSON.parse(users.classes);
                 users.teams = JSON.parse(users.teams);
+                users.repos = JSON.parse(users.repos);
                 console.log(dateReturn() + `User [${queryId}] listed!`);
             }else if(queryGitId != null){
-                users = await connection('users').select('*').where("git_id", queryGitId).first();
+                users = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", queryGitId).first();
 
                 if(users == null){
                     console.log(dateReturn() + `User [${queryGitId}] is not defined!`);
@@ -91,16 +104,16 @@ module.exports = {
                 }
                 users.urls = JSON.parse(users.urls);
                 users.classes = JSON.parse(users.classes);
-                users.repos = JSON.parse(users.repos);
                 users.teams = JSON.parse(users.teams);
+                users.repos = JSON.parse(users.repos);
                 console.log(dateReturn() + `Git user [${queryGitId}] listed!`);
             }else{
-                users = await connection('users').select('*');
+                users = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']);
                 for(var i in users){
-                    users[i].repos = JSON.parse(users[i].repos);
                     users[i].urls = JSON.parse(users[i].urls);
                     users[i].classes = JSON.parse(users[i].classes);
                     users[i].teams = JSON.parse(users[i].teams);
+                    users[i].repos = JSON.parse(users[i].repos);
                 }
             }
             console.log(dateReturn() + `Users listed!`);
@@ -122,7 +135,7 @@ module.exports = {
 
         if(internalSecurity.checkIsAuthorized(auth)){
             if(queryId != null){
-                users = await connection('users').select('*').where("id", queryId).andWhere("id_auth", queryAuth).first();
+                users = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("id", queryId).andWhere("id_auth", queryAuth).first();
                 if(users == null){
                     console.log(dateReturn() + `User [${queryId}] is not defined!`);
                     return res.status(404).json({
@@ -130,7 +143,7 @@ module.exports = {
                         "origin": "Database",
                     });
                 }
-                await connection('users').select('*').where("id", queryId).first().delete();
+                await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("id", queryId).first().delete();
                 console.log(dateReturn() + `User [${queryId}] deleted!`);
                 users.urls = JSON.parse(users.urls);
                 users.classes = JSON.parse(users.classes);
@@ -166,7 +179,7 @@ module.exports = {
 
         if(internalSecurity.checkIsAuthorized(auth)){
             if(queryId != null){
-                users = await connection('users').select('*').where("id", queryId).first();
+                users = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("id", queryId).first();
                 if(users == null){
                     console.log(dateReturn() + `User [${queryId}] is not defined!`);
                     return res.status(404).json({
@@ -174,7 +187,7 @@ module.exports = {
                         "origin": "Database",
                     });
                 }
-                await connection('users').select('*').where("id", queryId).update({
+                await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("id", queryId).update({
                     email,
                     git_id,
                     name,
@@ -211,32 +224,49 @@ module.exports = {
         }
     },
     async updateCredentials(req, res) {
-        const END_URL = process.env.REACT_APP_URL_FRONT;
-
         var { id, id_auth, email, password } = req.body;
+        
         var users = null;
 
-        if(id != null){
-            users = await connection('users').select('*').where("git_id", id).andWhere("id_auth", id_auth).first();
-            if(users == null){
+        const { auth } = req.headers;
+
+        if(internalSecurity.checkIsAuthorized(auth)){
+            if(id != null){
+                users = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", id).andWhere("id_auth", id_auth).first();
+                if(users == null){
+                    console.log(dateReturn() + `User [${id}] is not defined!`);
+                    return res.status(404).json({
+                        "message": "Operação inválida",
+                        "origin": "Database",
+                    });
+                }
+                await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", id).update({
+                    email,
+                    password,
+                });
+
+                
+                users.urls = JSON.parse(users.urls);
+                users.classes = JSON.parse(users.classes);
+                users.teams = JSON.parse(users.teams);
+                users.repos = JSON.parse(users.repos);
+
+                console.log(dateReturn() + `User [${id}] updated!`);
+
+                return res.status(200).json(users);
+            }else{
                 console.log(dateReturn() + `User [${id}] is not defined!`);
-                return res.status(404).redirect(END_URL+`/git/register?error=${true}&need_password=${false}`);
+                return res.status(404).json({
+                    "message": "Operação inválida",
+                    "origin": "Database",
+                });
             }
-            await connection('users').select('*').where("git_id", id).update({
-                email,
-                password,
-            });
-
-            users.urls = JSON.parse(users.urls);
-            users.classes = JSON.parse(users.classes);
-            users.teams = JSON.parse(users.teams);
-            users.repos = JSON.parse(users.repos);
-            console.log(dateReturn() + `User [${id}] updated!`);
-
-            return res.status(200).redirect(END_URL+`/git/register?error=${false}&need_password=${false}&goToProfile=true`);
         }else{
-            console.log(dateReturn() + `User [${id}] is not defined!`);
-            return res.status(404).redirect(END_URL+`/git/register?error=${true}&need_password=${false}`);
+            console.log(dateReturn() + `Unauthorized request has been blocked!`);
+            return res.status(203).json({
+                    "message": "Request não autorizado!",
+                    "origin": "Internal security",
+            });
         }
     },
     async updateRepos(req, res) {
@@ -248,7 +278,7 @@ module.exports = {
 
         if(internalSecurity.checkIsAuthorized(auth)){
             if(git_id != null){
-                users = await connection('users').select('*').where("git_id", git_id).first();
+                users = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", git_id).first();
                 if(users == null){
                     console.log(dateReturn() + `User [${git_id}] is not defined!`);
                     return res.status(404).json({
@@ -256,7 +286,7 @@ module.exports = {
                         "origin": "Database",
                     });
                 }
-                await connection('users').select('*').where("git_id", git_id).update({
+                await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", git_id).update({
                     repos,
                 });
 
