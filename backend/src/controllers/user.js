@@ -286,11 +286,16 @@ module.exports = {
                         "origin": "Database",
                     });
                 }
+                
                 await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", git_id).update({
                     repos,
                 });
 
-                users.repos = JSON.parse(repos);
+                users.urls = JSON.parse(users.urls);
+                users.classes = JSON.parse(users.classes);
+                users.teams = JSON.parse(users.teams);
+                users.repos = JSON.parse(users.repos);
+
                 console.log(dateReturn() + `User [${git_id}] updated!`);
                 return res.status(200).json(users);
             }else{

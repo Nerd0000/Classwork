@@ -57,6 +57,7 @@
     padding-left: 10px;
     font-size: 45px;
     color: white;
+    text-transform: capitalize;
 }
 
 .div-user-names {

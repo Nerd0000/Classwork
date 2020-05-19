@@ -13,7 +13,7 @@ export default function Login(){
     const history = useHistory();
     const location = useLocation();
 
-    queryToStorage(sessionStorage, history, location, 'user', 'error', 'need_password');
+    queryToStorage(sessionStorage, history, location, 'user', 'token', 'error', 'need_password');
     checkIfIsAuthenticated(sessionStorage, history, location);
 
     var need_password = sessionStorage.getItem('need_password');

@@ -38,6 +38,7 @@ module.exports = {
             }
         ).then(function(response){
             TOKEN = response.data.access_token;
+            console.log(TOKEN); //I need :)
         }).catch(function(){
             ERROR = true;
             console.log(dateReturn() + 'Error in get code from token');
@@ -78,7 +79,6 @@ module.exports = {
                 }
             }
         ).then(function(response){
-            
             for(var i in response.data){
                 REPOS.data[i] = {
                     id: response.data[i].id,
@@ -119,12 +119,9 @@ module.exports = {
             }).then(function(response){
                 NEED_PASSWORD = true;
                 USER = response.data;
-                USER.urls = JSON.parse(USER.urls);
-                USER.classes = JSON.parse(USER.classes);
-                USER.teams = JSON.parse(USER.teams);
-                USER.repos = JSON.parse(USER.repos);
-            }).catch(function(){
+            }).catch(function(err){
                 ERROR = true;
+                console.log(err);
                 console.log(dateReturn() + 'Error in update repos');
             });
             
@@ -189,9 +186,9 @@ module.exports = {
         });
 
         if(NEW){
-            return res.status(200).redirect(END_URL+`/profile/register?error=${ERROR}&need_password=${NEED_PASSWORD}&user=${JSON.stringify(USER)}`);
+            return res.status(200).redirect(END_URL+`/profile/register?token=${TOKEN}&error=${ERROR}&need_password=${NEED_PASSWORD}&user=${JSON.stringify(USER)}`);
         }else{
-            return res.status(200).redirect(END_URL+`/profile?user=${JSON.stringify(USER)}`);
+            return res.status(200).redirect(END_URL+`/profile?token=${TOKEN}&user=${JSON.stringify(USER)}`);
         }
     },
 

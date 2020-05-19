@@ -10,7 +10,8 @@ function Logins(props){
     const [password, setPassword] = useState("");
     const [alertError, setAlertError] = useState(false);
 
-    async function handleUpdateCredentials(){
+    async function handleUpdateCredentials(e){
+        e.preventDefault();
         var id = props.user.git_id;
         var id_auth = props.user.id_auth;
 
@@ -34,8 +35,8 @@ function Logins(props){
         });; 
     }
 
-    async function handleLogin(){
-
+    async function handleLogin(e){
+        e.preventDefault();
         await api.post("/login", {
             email,
             password,
@@ -67,7 +68,7 @@ function Logins(props){
                 {(props.need_password === "true")? <h2 className="red-login-update-warning">
                     <strong>Dados gerados automáticamente:</strong>
                     <br/> [Email] {props.user.email} <br/> [Password] {props.user.password}</h2>:null}
-                <div className="login-box">
+                <form className="login-box" onSubmit={handleUpdateCredentials}>
                     <div className="login-box-input-label">
                         <FaEnvelopeOpenText size={25} color="rgb(77, 151, 211)"/>
                         <h2 className="login-box-subtitle">Email</h2>
@@ -80,20 +81,20 @@ function Logins(props){
                     <input type="password" className="shadow-theme" name="password" value={password} onChange={handleChangePassword} required/>
                     <div className="login-box-button-container">
                         <div className="login-box-button shadow-theme">
-                            <button type="submit" onClick={handleUpdateCredentials}><h3>Enviar</h3></button>
+                            <button type="submit"><h3>Enviar</h3></button>
                         </div>
                         <div className="login-box-button red-login shadow-theme-red">
                             <Link to="/profile"><h3>Manter os dados atuais</h3></Link>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         );
 
         default: return(
             <div className="login-box-container"> 
                 <h1 className="login-box-title">Entrar com Classwork</h1>
-                <div className="login-box">
+                <form className="login-box" onSubmit={handleLogin}>
                     <div className="login-box-input-label">
                         <FaEnvelopeOpenText size={25} color="rgb(77, 151, 211)"/>
                         <h2 className="login-box-subtitle">Email</h2>
@@ -106,15 +107,15 @@ function Logins(props){
                     <input type="password" className="shadow-theme" name="password" value={password} onChange={handleChangePassword} required/>
                     <div className="login-box-button-container">
                         <div className="login-box-button shadow-theme">
-                            <button type="submit" onClick={handleLogin}><h3>Entrar</h3></button>
+                            <button type="submit"><h3>Entrar</h3></button>
                         </div>
                         <div className="login-box-button shadow-theme">
                             <Link to="/help"><h3>Como crio uma conta?</h3></Link>
                         </div>
                     </div>
-                </div>
-                {alertError? <div className="box-alert-login shadow-theme-red">
-                    <h3>Erro inesperado, por favor cheque sua conexão e dados informados.</h3>
+                </form>
+                {alertError? <div className="box-alert box-alert-login shadow-theme-red">
+                    <h3>Erro inesperado, por favor, cheque sua conexão e dados informados.</h3>
                     <button onClick={() => {
                         setAlertError(false);
                     }}>X</button>

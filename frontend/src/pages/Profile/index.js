@@ -10,7 +10,7 @@ export default function Profile(){
     const history = useHistory();
     const location = useLocation();
 
-    queryToStorage(sessionStorage, history, location, 'user');
+    queryToStorage(sessionStorage, history, location, 'user', 'token');
     checkIfIsAuthenticated(sessionStorage, history, location);
 
     return(
