@@ -37,13 +37,14 @@ export default function Commits(){
     var _commits = [];
     for(var q in actions.commits){
         var _date =  new Date(actions.commits[q].date);
-
+        
         var _day = _date.getDate();
         if(_day < 10){
             _day = "0" + String(_day);
         }
 
-        var _month = _date.getMonth();
+        var _month = _date.getUTCMonth();
+
         if(_month < 10){
             _month = "0" + String(_month);
         }
@@ -58,6 +59,7 @@ export default function Commits(){
             deletions: actions.commits[q].stats.deletions,
             message: actions.commits[q].message
         }
+        
     }
 
     const changesTimeline = _commits;
@@ -125,7 +127,7 @@ export default function Commits(){
         if (active) {
             return (
                 <div className="custom-tooltip">
-                    <img src={payload[2].value}/>
+                    <img src={payload[2].value} alt="avatar"/>
                     <div>
                         <h3>{`${label} - ${payload[0].value}`}</h3 >
                         <h4>{payload[1].value}</h4>

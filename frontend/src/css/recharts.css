@@ -52,7 +52,7 @@
 .timeline-areachart {
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
     margin-top: 50px;
 }
 
