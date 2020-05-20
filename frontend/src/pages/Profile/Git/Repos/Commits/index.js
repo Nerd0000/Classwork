@@ -37,23 +37,17 @@ export default function Commits(){
     var _commits = [];
     for(var q in actions.commits){
         var _date =  new Date(actions.commits[q].date);
+        _date = _date.toJSON();
         
-        var _day = _date.getDate();
-        if(_day < 10){
-            _day = "0" + String(_day);
-        }
-
-        var _month = _date.getUTCMonth();
-
-        if(_month < 10){
-            _month = "0" + String(_month);
-        }
+        var _day = _date.substring(8,10);
+        var _month = _date.substring(5,7);
+        var _year = _date.substring(2,4)
 
         _commits[(actions.commits.length - 1) - q] = {
             author: actions.commits[q].author,
             avatar: actions.commits[q].author_avatar,
             date: _date,
-            dateReducer: _day + "/" + _month + "/" + String(_date.getUTCFullYear()).substring(2, 4),
+            dateReducer: _day + "/" + _month + "/" + _year,
             total: actions.commits[q].stats.total,
             additions: actions.commits[q].stats.additions,
             deletions: actions.commits[q].stats.deletions,
