@@ -118,3 +118,7 @@
     background-color: rgb(64, 141, 204);
     transition: background-color .8s;
 }
+
+.color-theme-text {
+    color: steelblue;
+}

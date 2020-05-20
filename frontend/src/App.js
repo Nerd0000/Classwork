@@ -8,6 +8,7 @@ import './css/login.css';
 import './css/shadow.css';
 import './css/scrollbar.css';
 import './css/box-list.css';
+import './css/recharts.css';
 
 function App() {
   

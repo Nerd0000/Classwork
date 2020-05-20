@@ -71,7 +71,7 @@ export default function Profile(){
         setLoading(true);
         const REPOS_NAME = url.split('/')[5];
         var ACTION_CHECK = sessionStorage.getItem('actions@'+REPOS_NAME);
-
+        console.log(sessionStorage.getItem('actions@'+REPOS_NAME));
         if(ACTION_CHECK == null){
             const TOKEN = sessionStorage.getItem('token');
             const ACTIONS = {
@@ -87,6 +87,7 @@ export default function Profile(){
                     'Authorization': 'token ' + TOKEN
                 }
             }).then(async function(res){
+                console.log('abv');
                 var rank_void = true;
                 var rank_index = 0;
                 for(var k in res.data){
@@ -113,6 +114,7 @@ export default function Profile(){
                     ACTIONS.commits[k] = {
                         author: Object.values(com.data)[6].login,
                         author_avatar: Object.values(com.data)[6].avatar_url,
+                        date: Object.values(com.data)[2].author.date,
                         stats: Object.values(com.data)[9],
                         message: Object.values(com.data)[2].message,
                         files: FILES
@@ -142,14 +144,20 @@ export default function Profile(){
                         rank_index++;
                     }
                 }
+                sessionStorage.setItem('actions@'+REPOS_NAME, JSON.stringify(ACTIONS));
             }).catch(function(){
                 history.push('/error');
             });
-            sessionStorage.setItem('actions@'+REPOS_NAME, JSON.stringify(ACTIONS));
         }
-        sessionStorage.setItem('action', REPOS_NAME);
-        setLoading(false);
-        history.push('/profile/git/repos/commits');
+
+        if(location.pathname !== "/error"){
+            console.log(location.pathname);
+            sessionStorage.setItem('action', REPOS_NAME);
+            setLoading(false);
+            history.push('/profile/git/repos/commits');
+        }else{
+            setLoading(false);
+        }
     }
 
     //console.clear();
