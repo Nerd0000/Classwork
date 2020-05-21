@@ -28,6 +28,16 @@ button, a {
     cursor: pointer;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .div-global-page-dooble {
     display: flex;
     flex-direction: row;

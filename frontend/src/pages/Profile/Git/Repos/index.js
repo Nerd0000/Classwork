@@ -16,6 +16,7 @@ export default function Profile(){
     const [canTry, setCanTry] = useState(true);
     const [reposGitHub, setReposGitHub] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [commitsMax, setCommitsMax] = useState("Carregando...");
 
     getReposGitHub();
     checkIfIsAuthenticated(sessionStorage, history, location);
@@ -71,7 +72,6 @@ export default function Profile(){
         setLoading(true);
         const REPOS_NAME = url.split('/')[5];
         var ACTION_CHECK = sessionStorage.getItem('actions@'+REPOS_NAME);
-        console.log(sessionStorage.getItem('actions@'+REPOS_NAME));
         if(ACTION_CHECK == null){
             const TOKEN = sessionStorage.getItem('token');
             const ACTIONS = {
@@ -87,9 +87,9 @@ export default function Profile(){
                     'Authorization': 'token ' + TOKEN
                 }
             }).then(async function(res){
-                console.log('abv');
                 var rank_void = true;
                 var rank_index = 0;
+                setCommitsMax(res.data.length);
                 for(var k in res.data){
                     ACTIONS.shas[k] = res.data[k].sha;
 
@@ -98,7 +98,7 @@ export default function Profile(){
                             'Authorization': 'token ' + TOKEN
                         }
                     })
-
+                    
                     var FILES = Object.values(com.data)[10];
 
                     for(var x in FILES){
@@ -151,7 +151,6 @@ export default function Profile(){
         }
 
         if(location.pathname !== "/error"){
-            console.log(location.pathname);
             sessionStorage.setItem('action', REPOS_NAME);
             setLoading(false);
             history.push('/profile/git/repos/commits');
@@ -159,8 +158,6 @@ export default function Profile(){
             setLoading(false);
         }
     }
-
-    //console.clear();
 
     return(
         <div>
@@ -170,8 +167,12 @@ export default function Profile(){
                     <ul>{reposListGitHub}</ul>
                 </div>
             </div>
-            {loading? <div className="box-alert shadow-theme">
-                    <h3>Carregando dados... Por favor, aguarde. Esse evento pode demorar conforme o tamanho do seu repositório!</h3>
+            {loading? <div className="box-alert load-bar shadow-theme">
+                    <h3>Carregando dados... Por favor, aguarde. Esse evento pode demorar conforme a quantidade de commits!</h3>
+                    <div>
+                        <h2>{`Commits: ${commitsMax}`}</h2>
+                        <div/>
+                    </div>
             </div>:null}
         </div>
     );

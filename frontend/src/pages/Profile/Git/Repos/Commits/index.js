@@ -3,17 +3,21 @@ import { PieChart, Pie, Sector, Cell, AreaChart, Area, XAxis, YAxis, CartesianGr
 import { useHistory, useLocation } from "react-router-dom";
 
 import HeaderAuth from '../../../../../components/headerAuth';
+import Painel from '../../../../../components/painel';
 
 import checkIfIsAuthenticated from '../../../../../utils/checkIfIsAuthenticated';
+import Icons from '../../../../../components/icons';
 
 export default function Commits(){
     const history = useHistory();
     const location = useLocation();
     const [indexOfValue, setIndexOfValue] = useState(0);
+    const [pieFocus, setPieFocus] = useState(false);
     const [activeAnimation, setActiveAnimation] = useState(true);
+    const [page, setPage] = useState(1);
 
     checkIfIsAuthenticated(sessionStorage, history, location);
-    
+
     var action = sessionStorage.getItem('action');
     var actionSplit = action.split('-');
     var title = '';
@@ -27,6 +31,10 @@ export default function Commits(){
     }
 
     var actions = JSON.parse(sessionStorage.getItem('actions@' + action));
+
+    var itemPerPage = 10;
+    var pageMax = (actions.commits.length/itemPerPage);
+    var pageMin = 1;
 
     var qtdCommit = actions.commits.length;
     var qtdChange = 0;
@@ -56,6 +64,16 @@ export default function Commits(){
         
     }
 
+    function handleChangePage(e){
+        setPage(e.target.value);
+    }
+
+    function goToPage(num, func){
+        if((num <= pageMax && func === "next") || (num >= pageMin && func === "back")){
+            setPage(num);
+        }
+    }
+
     const changesTimeline = _commits;
 
     //Grafico de Pizza
@@ -70,10 +88,16 @@ export default function Commits(){
         const sy = cy + (outerRadius + 10) * sin;
         const mx = cx + (outerRadius + 30) * cos;
         const my = cy + (outerRadius + 30) * sin;
-        const ex = mx + (cos >= 0 ? 1 : -1) * 55;
-        const exp = mx + (cos >= 0 ? 1 : -1) * 65;
+        const ex = mx + (cos >= 0 ? 1 : -1) * 45;
+        const exp = mx + (cos >= 0 ? 1 : -1) * 53;
         const ey = my;
         const textAnchor = cos >= 0 ? 'start' : 'end';
+
+        var _author = payload.name;
+        if(qtdAuthor === 1 && _author.length > 10){
+           _author = _author.substring(0, 8) + "...";
+        }
+
         return (
             <g>
                 <defs>
@@ -83,13 +107,14 @@ export default function Commits(){
                 </defs>
                 <circle cx={cx} cy={cy} r={innerRadius - 10} fill="url(#avt)"/>
                 <Sector
+                    className="sector"
                     cx={cx}
                     cy={cy}
-                    innerRadius={innerRadius}
-                    outerRadius={outerRadius}
+                    innerRadius={pieFocus? (innerRadius + 4):innerRadius}
+                    outerRadius={pieFocus? (outerRadius + 4):outerRadius}
                     startAngle={startAngle}
                     endAngle={endAngle}
-                    fill="steelblue"
+                    fill={pieFocus? "rgb(23, 81, 129)":"steelblue"}
                 />
                 <Sector
                     cx={cx}
@@ -107,11 +132,11 @@ export default function Commits(){
                 <path d={`M${ex + (cos >= 0 ? 1 : -1) * 28},${ey + 18}L${ex + (cos >= 0 ? 1 : -1) * 28},${ey + 29}`} strokeWidth="5" stroke="rgb(197, 148, 91,0.6)" fill="none"/>
 
                 <circle cx={exp} cy={ey} r={3} fill="steelblue" stroke="none"/>
-                <text className="details-pie-percent" x={ex + (cos >= 0 ? 1 : -1) * -35} y={ey + 10} dy={-18} textAnchor={textAnchor} fill="steelblue">{`${(percent * 100).toFixed(2)}%`}</text>
-                <text className="details-pie-title " x={ex + (cos >= 0 ? 1 : -1) * 35} y={ey} dy={-25}textAnchor={textAnchor} fill="steelblue">{`${payload.name}`}</text>
+                <text className="details-pie-percent" x={ex + (cos >= 0 ? 1 : -1) * -40} y={ey + 10} dy={-18} textAnchor={textAnchor} fill="steelblue">{`${(percent * 100).toFixed(2)}%`}</text>
+                <text className="details-pie-title " x={ex + (cos >= 0 ? 1 : -1) * 35} y={ey} dy={-25}textAnchor={textAnchor} fill="steelblue">{`${_author}`}</text>
                 <text className="details-pie" x={ex + (cos >= 0 ? 1 : -1) * 35} y={ey} dy={-7} textAnchor={textAnchor} fill="rgb(1, 53, 95)">Total: {payload.total}</text>
-                <text className="details-pie" x={ex + (cos >= 0 ? 1 : -1) * 35} y={ey} dy={11} textAnchor={textAnchor} fill="rgb(1, 53, 95)">Adicionou: {payload.additions}</text>
-                <text className="details-pie" x={ex + (cos >= 0 ? 1 : -1) * 35} y={ey} dy={29} textAnchor={textAnchor} fill="rgb(1, 53, 95)">Removeu: {payload.deletions}</text>
+                <text className="details-pie" x={ex + (cos >= 0 ? 1 : -1) * 35} y={ey} dy={11} textAnchor={textAnchor} fill="rgb(1, 53, 95)">{payload.additions}</text>
+                <text className="details-pie" x={ex + (cos >= 0 ? 1 : -1) * 35} y={ey} dy={29} textAnchor={textAnchor} fill="rgb(1, 53, 95)">{payload.deletions}</text>
             </g>
         );
     };
@@ -157,9 +182,70 @@ export default function Commits(){
     
         return null;
     };
-      
-    const TimelineAreaChart = () => {
-        return (
+
+    return(
+        <div>
+            <HeaderAuth title={title}/>
+            <Painel/>
+            <div className="div-global-page with-scroll header-is-auth">
+            <div className="piechart-div">
+                <PieChart width={700} height={400}>
+                    <Pie 
+                        activeIndex={indexOfValue}
+                        activeShape={activeShape} 
+                        labelLine={false}
+                        data={actions.rank} 
+                        cx={300} 
+                        cy={200} 
+                        innerRadius={60}
+                        outerRadius={80} 
+                        dataKey="total"
+                        paddingAngle={2}
+                        onClick={() =>{
+                            setPieFocus(!pieFocus);
+                        }}
+                        onMouseOver={(data, index) => {
+                            if(!pieFocus){
+                                setIndexOfValue(index);
+                            }
+                        }}
+                    >
+                    {
+                        actions.rank.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none"/>)
+                    }
+                    </Pie>
+                    <Pie 
+                        data={dataDetails} 
+                        cx={300} 
+                        cy={200}
+                        dataKey="value" 
+                        innerRadius={45}
+                        outerRadius={55} 
+                        paddingAngle={2}
+                    >
+                    {
+                        dataDetails.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} stroke="none"/>)
+                    }
+                    </Pie>
+                </PieChart>
+                <div className="piechart-div-title">
+                    <div>
+                        <h1 className="piechart-title">Commits</h1>
+                        <h2 className="piechart-detail">Total de Commits: <span className="color-theme-text">{qtdCommit}</span></h2>
+                        <h2 className="piechart-detail">Total de Alterações: <span className="color-theme-text">{qtdChange}</span></h2>
+                        <h2 className="piechart-detail">Total de Autores: <span className="color-theme-text">{qtdAuthor}</span></h2>
+                        <h2 className="piechart-detail">Commits/Autores: <span className="color-theme-text">{(qtdCommit/qtdAuthor).toFixed(2)}</span></h2>
+                        <h2 className="piechart-detail">Alterações/Autores: <span className="color-theme-text">{(qtdChange/qtdAuthor).toFixed(2)}</span></h2>
+                        <h2 className="piechart-detail">Alterações/Commit: <span className="color-theme-text">{(qtdChange/qtdCommit).toFixed(2)}</span></h2>
+                    </div>
+                    <div>
+                        <h1 className="piechart-title">Commit Recente</h1>
+                        <h2 className="piechart-detail">{actions.commits[0].author} | <span className="color-theme-text">{actions.commits[0].message}</span></h2>
+                    </div>
+                </div>
+            </div>
+            <h1 className="commmits-chart-title">Linha do Tempo</h1>
+            <h2 className="commmits-chart-subtitle">Visualize o histórico do repositório de forma ampla</h2>
             <div className="timeline-areachart">
                 <AreaChart width={1200} height={200} className="areacharts-first" data={changesTimeline} syncId="timeline">
                 <CartesianGrid strokeDasharray="3 3"/>
@@ -194,67 +280,53 @@ export default function Commits(){
                     </AreaChart>
                 </div>
             </div>
-        );
-    }
+            <h1 className="commmits-chart-title">Registro Geral</h1>
+            <h2 className="commmits-chart-subtitle">Clique em um commit para ver todas as informações</h2>
+            <table className="table-commits">
+                <thead>
+                    <tr>
+                        <th>Nº</th>
+                        <th colSpan={2}>Usuário</th>
+                        <th>Alterações</th>
+                        <th>Data</th>
+                        <th>Mensagem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {
+                    actions.commits.map(function(item, index){
+                        var _date =  new Date(item.date);
+                        _date = _date.toJSON();
+                        
+                        var _day = _date.substring(8,10);
+                        var _month = _date.substring(5,7);
+                        var _year = _date.substring(2,4);
 
-    return(
-        <div>
-            <HeaderAuth title={title}/>
-            <div className="div-global-page with-scroll header-is-auth">
-            <div className="piechart-div">
-                <PieChart width={700} height={400}>
-                    <Pie 
-                        activeIndex={indexOfValue}
-                        activeShape={activeShape} 
-                        labelLine={false}
-                        data={actions.rank} 
-                        cx={300} 
-                        cy={200} 
-                        innerRadius={60}
-                        outerRadius={80} 
-                        dataKey="total"
-                        paddingAngle={2}
-                        onMouseEnter={(data, index) => {
-                            setIndexOfValue(index)}
+                        if((index+1) > (itemPerPage*(page-1)) && (index+1) <= (itemPerPage*(page))){
+                            return(<tr key={index} className="table-commits-tr" onClick={() => {console.log("ABC")}}>
+                                <td className="table-commits-tr-td table-commits-tr-td-text table-id">{actions.commits.length - index}</td>
+                                <td className="table-commits-tr-td table-commits-tr-td-img table-img"><img src={item.author_avatar} alt="avatar"/></td>
+                                <td className="table-commits-tr-td table-commits-tr-td-img-text table-author">{item.author}</td>
+                                <td className="table-commits-tr-td table-commits-tr-td-text table-alt">{item.stats.total}</td>
+                                <td className="table-commits-tr-td table-commits-tr-td-text table-date">{`${_day}/${_month}/${_year}`}</td>
+                                <td className="table-commits-tr-td table-msg">{item.message}</td>
+                            </tr>);
+                        }else{
+                            return null;
                         }
-                    >
-                    {
-                        actions.rank.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none"/>)
-                    }
-                    </Pie>
-                    <Pie 
-                        data={dataDetails} 
-                        cx={300} 
-                        cy={200}
-                        dataKey="value" 
-                        innerRadius={45}
-                        outerRadius={55} 
-                        paddingAngle={2}
-                    >
-                         {
-                        dataDetails.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} stroke="none"/>)
-                    }
-                    </Pie>
-                </PieChart>
-                <div className="piechart-div-title">
-                    <div>
-                        <h1 className="piechart-title">Commits</h1>
-                        <h2 className="piechart-detail">Total de Commits: <span className="color-theme-text">{qtdCommit}</span></h2>
-                        <h2 className="piechart-detail">Total de Alterações: <span className="color-theme-text">{qtdChange}</span></h2>
-                        <h2 className="piechart-detail">Total de Autores: <span className="color-theme-text">{qtdAuthor}</span></h2>
-                        <h2 className="piechart-detail">Commits/Autores: <span className="color-theme-text">{(qtdCommit/qtdAuthor).toFixed(2)}</span></h2>
-                        <h2 className="piechart-detail">Alterações/Autores: <span className="color-theme-text">{(qtdChange/qtdAuthor).toFixed(2)}</span></h2>
-                        <h2 className="piechart-detail">Alterações/Commit: <span className="color-theme-text">{(qtdChange/qtdCommit).toFixed(2)}</span></h2>
-                    </div>
-                    <div>
-                        <h1 className="piechart-title">Commit Recente</h1>
-                        <h2 className="piechart-detail">{actions.commits[0].author} | <span className="color-theme-text">{actions.commits[0].message}</span></h2>
-                    </div>
-                </div>
+                    })
+                }
+                </tbody>
+            </table>
+            <div className="table-page-control-div">
+                <button onClick={() => {goToPage(pageMin, "back")}} style={{color: (page > pageMin)? "rgb(70, 130, 180)":"rgb(148, 182, 211)"}}><Icons name="double-back" size={25} color="white"/></button>
+                <button onClick={() => {goToPage(page - 1, "back")}} style={{color: (page > pageMin)? "rgb(70, 130, 180)":"rgb(148, 182, 211)"}}><Icons name="back" size={25} color="white"/></button>
+                    
+                <input min={pageMin} max={pageMax} type="number" value={page} onChange={handleChangePage}></input>
+               
+                <button onClick={() => {goToPage(page + 1, "next")}} style={{color: (page < pageMax)? "rgb(70, 130, 180)":"rgb(148, 182, 211)"}}><Icons name="next" size={25} color="white"/></button>
+                <button onClick={() => {goToPage(pageMax, "next")}} style={{color: (page < pageMax)? "rgb(70, 130, 180)":"rgb(148, 182, 211)"}}><Icons name="double-next" size={25} color="white"/></button>
             </div>
-
-            <TimelineAreaChart/>
-
             </div>
         </div>
     );

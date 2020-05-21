@@ -122,3 +122,182 @@
 .color-theme-text {
     color: steelblue;
 }
+
+.load-bar {
+    display: inline;
+    flex-direction: column;
+}
+
+.load-bar div{
+    width: 100%;
+    background-color: rgb(157, 196, 228);
+    z-index: 3;
+}
+
+.load-bar div h2{
+    display: inline;
+    font-size: 15px;
+    padding: 8px;
+    background-color: rgb(67, 125, 173);
+}
+
+.table-commits {
+    margin-top: 15px;
+    border-spacing: 0;
+    border: steelblue 2px solid;
+    border-left: none;
+    display: inline-table;
+    width: 100%;
+}
+
+.table-commits tr th{
+    color: white;
+    background-color: rgb(98, 167, 224);
+    border-left: steelblue 2px solid;
+    padding: 5px;
+}
+
+.table-commits-thead{
+    border: steelblue 2px solid;
+}
+
+.table-commits-tr:hover td {
+    background-color: rgb(98, 167, 224, 0.1);
+    cursor: pointer;
+}
+
+.table-commits-tr-td{
+    border-left: steelblue 2px solid;
+    border-top: steelblue 2px solid;
+}
+
+.table-commits-tr-td-text {
+    text-align: center;
+}
+
+.table-commits-tr-td-img img{
+    padding: 10px;
+    padding-bottom: 8px;
+    height: 50px;
+    width: 50px;
+    border-radius: 45px;
+}
+
+.table-commits-tr-td-img-text {
+    border-left: none;
+}
+
+.table-id {
+    padding: 8px;
+    width: 50px;
+}
+
+.table-img {
+    width: 8px;
+}
+
+.table-author {
+    padding: 8px;
+    width: 150px;
+}
+
+.table-alt {
+    padding: 8px;
+    width: 100px;
+}
+
+.table-date {
+    padding: 8px;
+    width: 100px;
+}
+
+.table-msg {
+    padding: 8px;
+}
+
+.painel-div {
+    right: 23px;
+    top: 92px;
+    position: absolute;
+    z-index: 5;
+}
+
+.painel-div button{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border: none;
+    color: white;
+    background-color: rgb(114, 182, 238);
+    font-size: 0px;
+    width: 50px;
+    height: 50px;
+    border-radius: 60px;
+    transition: width .5s, border-radius .5s;
+}
+
+.painel-div svg{
+    margin-left: 16px;
+}
+
+.painel-div:hover svg{
+    margin-left: 10px;
+}
+
+
+.painel-div h1{
+    margin-right: 20px;
+}
+
+.painel-div:hover button{
+    color: white;
+    font-size: 10px;
+    width: auto;
+    border-radius: 0px;
+    transition: width .5s, border-radius .5s, font-size .5s;
+}
+
+.table-page-control-div {
+    display: flex;
+}
+
+.table-page-control-div button{
+    background-color: currentColor;
+    padding: 5px;
+    display: flex;
+    border: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-page-control-div input{
+    background-color: steelblue;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    padding: 5px;
+    display: flex;
+    border: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-page-control-div input:hover{
+    background-color: whitesmoke;
+    color: steelblue;
+    font-size: 20px;
+    text-align: center;
+    padding: 5px;
+    display: flex;
+    border: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-page-control-div button:hover{
+    opacity: 0.8;
+}

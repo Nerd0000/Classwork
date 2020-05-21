@@ -1,3 +1,7 @@
+.sector:hover {
+    cursor: pointer;
+}
+
 .piechart-div {
     width: 100%;
     display: flex;
@@ -53,7 +57,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 50px;
+    margin-top: 10px;
 }
 
 .timeline-areachart-2 {
@@ -109,4 +113,17 @@
     color: black;
     font-size: 13px;
     font-weight: 600;
+}
+
+.commmits-chart-title {
+    text-align: center;
+    margin-top: 35px;
+    font-size: 50px;
+}
+
+.commmits-chart-subtitle {
+    text-align: center;
+    margin-top: 2px;
+    font-size: 20px;
+    font-weight: 500;
 }
