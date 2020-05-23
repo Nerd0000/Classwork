@@ -33,7 +33,7 @@ export default function Commits(){
     var actions = JSON.parse(sessionStorage.getItem('actions@' + action));
 
     var itemPerPage = 10;
-    var pageMax = (actions.commits.length/itemPerPage);
+    var pageMax = Math.ceil(actions.commits.length/itemPerPage);
     var pageMin = 1;
 
     var qtdCommit = actions.commits.length;
@@ -183,6 +183,11 @@ export default function Commits(){
         return null;
     };
 
+    function openCommitFiles(comm){
+        sessionStorage.setItem('action-files', JSON.stringify(comm));
+        history.push('/profile/git/repos/commits/files');
+    }
+
     return(
         <div>
             <HeaderAuth title={title}/>
@@ -288,6 +293,7 @@ export default function Commits(){
                         <th>Nº</th>
                         <th colSpan={2}>Usuário</th>
                         <th>Alterações</th>
+                        <th>Arquivos</th>
                         <th>Data</th>
                         <th>Mensagem</th>
                     </tr>
@@ -303,11 +309,12 @@ export default function Commits(){
                         var _year = _date.substring(2,4);
 
                         if((index+1) > (itemPerPage*(page-1)) && (index+1) <= (itemPerPage*(page))){
-                            return(<tr key={index} className="table-commits-tr" onClick={() => {console.log("ABC")}}>
+                            return(<tr key={index} className="table-commits-tr" onClick={() => {openCommitFiles(item)}}>
                                 <td className="table-commits-tr-td table-commits-tr-td-text table-id">{actions.commits.length - index}</td>
                                 <td className="table-commits-tr-td table-commits-tr-td-img table-img"><img src={item.author_avatar} alt="avatar"/></td>
                                 <td className="table-commits-tr-td table-commits-tr-td-img-text table-author">{item.author}</td>
                                 <td className="table-commits-tr-td table-commits-tr-td-text table-alt">{item.stats.total}</td>
+                                <td className="table-commits-tr-td table-commits-tr-td-text table-alt">{item.files.length}</td>
                                 <td className="table-commits-tr-td table-commits-tr-td-text table-date">{`${_day}/${_month}/${_year}`}</td>
                                 <td className="table-commits-tr-td table-msg">{item.message}</td>
                             </tr>);

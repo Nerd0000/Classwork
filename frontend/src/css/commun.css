@@ -192,6 +192,11 @@
     width: 50px;
 }
 
+.table-file {
+    padding: 8px;
+    width: 150px;
+}
+
 .table-img {
     width: 8px;
 }
