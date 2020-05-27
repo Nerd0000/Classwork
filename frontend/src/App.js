@@ -9,6 +9,7 @@ import './css/shadow.css';
 import './css/scrollbar.css';
 import './css/box-list.css';
 import './css/recharts.css';
+import './css/directory.css';
 
 function App() {
   

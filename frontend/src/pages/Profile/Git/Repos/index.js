@@ -5,6 +5,7 @@ import HeaderAuth from '../../../../components/headerAuth';
 import IconsLanguage from '../../../../components/iconsLanguage';
 
 import axios from 'axios';
+import api from '../../../../services/api';
 
 import checkIfIsAuthenticated from '../../../../utils/checkIfIsAuthenticated';
 
@@ -74,11 +75,35 @@ export default function Profile(){
         var ACTION_CHECK = sessionStorage.getItem('actions@'+REPOS_NAME);
         if(ACTION_CHECK == null){
             const TOKEN = sessionStorage.getItem('token');
+
+            var NEW = false;
+            var url_id = url.replace('/commits{/sha}','');
+            var id_rep = -1;
+            await axios.get(url_id, {
+                headers: {
+                    'Authorization': 'token ' + TOKEN
+                }
+            }).then(function(res){
+                id_rep = Number(res.data.id);
+            }).catch(function(res){
+                console.log("Erro inesperado...");
+            });
+
             const ACTIONS = {
                 shas: [],
                 commits: [],
                 rank: [],
             };
+
+            await api({
+                method: 'get',
+                url: `/actions/isValidId?id_rep=${id_rep}&id_auth=${JSON.parse(sessionStorage.getItem('user')).id_auth}` ,
+                headers: {
+                    'auth': process.env.REACT_APP_DB_IDENTITY,
+                },
+            }).then(function(retu){
+                NEW = !retu.data.isValid;
+            }).catch(function(){});
 
             url = url.replace('{/sha}','');
 
@@ -92,7 +117,7 @@ export default function Profile(){
                 setCommitsMax(res.data.length);
                 for(var k in res.data){
                     ACTIONS.shas[k] = res.data[k].sha;
-
+                    
                     const com = await axios.get(url + '/' + ACTIONS.shas[k], {
                         headers: {
                             'Authorization': 'token ' + TOKEN
@@ -100,13 +125,14 @@ export default function Profile(){
                     })
                     
                     var FILES = Object.values(com.data)[10];
-
+                    
                     for(var x in FILES){
                         FILES[x] = {
                             filename: FILES[x].filename,
                             status:  FILES[x].status,
                             additions: FILES[x].additions,
                             deletions: FILES[x].deletions,
+                            raw_url: FILES[x].raw_url,
                             changes: FILES[x].changes
                         }
                     }
@@ -117,6 +143,7 @@ export default function Profile(){
                         date: Object.values(com.data)[2].author.date,
                         stats: Object.values(com.data)[9],
                         message: Object.values(com.data)[2].message,
+                        tree:  Object.values(com.data)[2].tree.url,
                         files: FILES
                     }
 
@@ -143,6 +170,35 @@ export default function Profile(){
                         };
                         rank_index++;
                     }
+                }
+                var id_auth = JSON.parse(sessionStorage.getItem('user')).id_auth;
+                var action = ACTIONS;
+                if(NEW){
+                    await api({
+                        method: 'post',
+                        url: `/action/create`,
+                        data: {
+                            id_auth, 
+                            id_rep,
+                            action
+                        },
+                        headers: {
+                            'auth': process.env.REACT_APP_DB_IDENTITY,
+                        },
+                    }).then(function(){}).catch(function(){});
+                }else{
+                    await api({
+                        method: 'post',
+                        url: `/action/update`,
+                        data: {
+                            id_auth, 
+                            id_rep,
+                            action
+                        },
+                        headers: {
+                            'auth': process.env.REACT_APP_DB_IDENTITY,
+                        },
+                    }).then(function(){}).catch(function(){});
                 }
                 sessionStorage.setItem('actions@'+REPOS_NAME, JSON.stringify(ACTIONS));
             }).catch(function(){

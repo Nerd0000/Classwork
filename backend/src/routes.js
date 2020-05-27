@@ -2,6 +2,7 @@ const express = require('express');
 
 const gitController = require('./controllers/git.js');
 const userController = require('./controllers/user.js');
+const actionController = require('./controllers/actions.js');
 
 const routes = express.Router();
 
@@ -15,7 +16,13 @@ routes.post('/login', userController.login);
 routes.delete('/user/delete', userController.delete);
 routes.get('/users', userController.list);
 
-
+//Actions 
+routes.post('/action/create', actionController.create);
+routes.post('/action/update', actionController.update);
+routes.delete('/action/delete', actionController.delete);
+routes.get('/actions', actionController.list);
+routes.get('/actions/isValidId', actionController.isValidId);
+routes.get('/raw', actionController.raw);
 
 //Git
 routes.get('/git', gitController.git);

@@ -4,9 +4,11 @@ import { useHistory, useLocation } from "react-router-dom";
 
 import HeaderAuth from '../../../../../components/headerAuth';
 import Painel from '../../../../../components/painel';
+import Directory from './directory';
 
 import checkIfIsAuthenticated from '../../../../../utils/checkIfIsAuthenticated';
 import Icons from '../../../../../components/icons';
+
 
 export default function Commits(){
     const history = useHistory();
@@ -15,6 +17,7 @@ export default function Commits(){
     const [pieFocus, setPieFocus] = useState(false);
     const [activeAnimation, setActiveAnimation] = useState(true);
     const [page, setPage] = useState(1);
+
 
     checkIfIsAuthenticated(sessionStorage, history, location);
 
@@ -334,6 +337,9 @@ export default function Commits(){
                 <button onClick={() => {goToPage(page + 1, "next")}} style={{color: (page < pageMax)? "rgb(70, 130, 180)":"rgb(148, 182, 211)"}}><Icons name="next" size={25} color="white"/></button>
                 <button onClick={() => {goToPage(pageMax, "next")}} style={{color: (page < pageMax)? "rgb(70, 130, 180)":"rgb(148, 182, 211)"}}><Icons name="double-next" size={25} color="white"/></button>
             </div>
+            <h1 className="commmits-chart-title">Diretório</h1>
+            <h2 className="commmits-chart-subtitle">Visualize todos os arquivos</h2>
+            <Directory _url={actions.commits[0].tree}/>
             </div>
         </div>
     );

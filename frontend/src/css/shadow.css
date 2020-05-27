@@ -30,3 +30,7 @@
 .shadow-theme-red:hover {
     box-shadow: 0 5px 5px 0 rgba(180, 70, 70, 0.5),0px 5px 15px 0 rgba(180, 70, 70, 0.6);
 }
+
+.no-focus-shadow-theme:focus {
+    box-shadow: none;
+}

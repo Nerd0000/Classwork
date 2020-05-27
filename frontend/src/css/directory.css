@@ -1,0 +1,97 @@
+.directory-div {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.directory-div button{
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    color: steelblue;
+    background-color: whitesmoke;
+    font-size: 22px;
+    margin-bottom: 10px;
+    padding: 20px 20px;
+    transition: color .5s, background-color .5s, box-shadow .5s;
+}
+
+.directory-div button:hover{
+    background-color: steelblue;
+    color: white;
+    transition: color .5s, background-color .5s, box-shadow .5s;
+}
+
+.directory-div button div{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.directory-div button div svg{
+    margin-right: 20px;
+}
+
+.directory-div button div + svg{
+    justify-items: flex-end;
+    margin-left: 20px;
+}
+
+.directory-div div.alt{
+    border: none;
+    display: flex;
+    color: steelblue;
+    background-color: whitesmoke;
+    font-size: 22px;
+    margin-bottom: 10px;
+    padding: 20px 20px;
+    transition: color .5s, background-color .5s, box-shadow .5s;
+}
+
+.directory-div div.alt:hover{
+    background-color: steelblue;
+    color: white;
+    transition: color .5s, background-color .5s, box-shadow .5s;
+}
+
+.directory-div table.code {
+    border-spacing: 0px;
+    border: black 2px solid;
+    border-bottom: black 2px solid;
+    background-color: black;
+    width: 100%;
+    color: black;
+}
+
+.directory-div table.code tr td{
+    background-color: white;
+    padding: 2px;
+    padding-left: 5px;
+}
+
+.directory-div table.code tr td:first-child{
+    -moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select:none; 
+    -o-user-select:none;
+    user-select:none;
+    background-color: white;
+    border-right: steelblue 2px solid;
+    border-bottom: black 2px solid;
+    padding: 2px;
+}
+
+.directory-div table.code tr td pre{
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+}
+
+.directory-div h1 {
+    margin-bottom: 15px;
+}
+
