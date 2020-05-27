@@ -114,7 +114,3 @@ export default function Directory(props){
         return(null);
     }
 }
-
-/*                {_contFile.map(function(item, index){
-                    <code key={index}><span>{index}</span>{item}</code>
-                })}*/
