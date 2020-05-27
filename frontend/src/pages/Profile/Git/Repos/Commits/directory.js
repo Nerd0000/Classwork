@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import Icons from '../../../../../components/iconsLanguage';
-import Highlight from 'react-highlight';
 
 import base64 from 'base-64';
 import axios from 'axios';
@@ -16,7 +15,6 @@ export default function Directory(props){
     const [nameFile, setNameFile] = useState("");
     const [indFile, setIndFile] = useState(-1);
     const [contFile, setContFile] = useState(null);
-    const [fileType, setFileType] = useState('');
 
     var _oldUrlTree = oldUrlTree;
 
@@ -38,18 +36,24 @@ export default function Directory(props){
                     "Authorization": "token " + sessionStorage.getItem('token')
                 }
             }).then(async function(response){
-                await setTree(response.data.tree);
+                setTree(response.data.tree);
                 setLoadTree(true);
             }).catch();
         }
 
         function changeTreeFolder(url, type, item, ind){
+            var _type = item.path.split('.')
+            var _typeItem = _type[_type.length- 1];
+
             if(type === "tree"){
                 setLoadTree(false);
                 setOldTreeUrlIndex(oldTreeUrlIndex + 1);
                 setTreeUrl(url);
                 setCanUpdate(true);
-            }else if(type === "blob"){
+                setContFile(null);
+                setIndFile(-1);
+                setNameFile("");
+            }else if(type === "blob" && _typeItem !== "ico" && _typeItem !== "lock"){
                 axios.get(url, {
                     headers: {
                         "Authorization": "token " + sessionStorage.getItem('token')
@@ -58,14 +62,10 @@ export default function Directory(props){
                     var _blob = base64.decode(response.data.content);
 
                     if(_blob !== contFile){
-                        var _type = item.path.split('.')
-                        var _typeItem = _type[_type.length- 1];
-                        setFileType(_typeItem);
                         setContFile(_blob);
                         setNameFile(item.path);
                         setIndFile(ind);
                     }else{
-                        setFileType('');
                         setContFile(null);
                         setIndFile(-1);
                         setNameFile("");
@@ -106,8 +106,18 @@ export default function Directory(props){
                     Carregando...
                 </div>
             }
-            {(contFile != null)? <div><h1 className="commmits-chart-title">{nameFile}</h1><div className="code">
-            <Highlight className={fileType}>{contFile}</Highlight></div></div>:null} 
+            {(contFile != null)? <div> 
+                <h1 className="commmits-chart-title">{nameFile}</h1>
+                <table className="code">
+                    <tbody>	           
+                        {contFile.split('\n').map(function(item, index){	
+                            return(<tr key={index}>	
+                                <td style={(index === contFile.split('\n').length - 1)? {borderBottom: 'none'}:{}}>{index}</td>	
+                                <td><pre>{item}</pre></td>	
+                            </tr>)	
+                        })}	
+                    </tbody>
+                </table></div>:null}
         </div>);
     }else{
         return(null);
