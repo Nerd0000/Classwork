@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Icons from '../../../../../components/iconsLanguage';
+import Highlight from 'react-highlight';
 
 import base64 from 'base-64';
 import axios from 'axios';
@@ -15,7 +16,8 @@ export default function Directory(props){
     const [nameFile, setNameFile] = useState("");
     const [indFile, setIndFile] = useState(-1);
     const [contFile, setContFile] = useState(null);
-    const [terminal, setTerminal] = useState([]);
+    const [fileType, setFileType] = useState('');
+
     var _oldUrlTree = oldUrlTree;
 
     if(oldTreeUrlIndex < 0){
@@ -48,20 +50,25 @@ export default function Directory(props){
                 setTreeUrl(url);
                 setCanUpdate(true);
             }else if(type === "blob"){
-                axios.get(url).then(async function(response){
+                axios.get(url, {
+                    headers: {
+                        "Authorization": "token " + sessionStorage.getItem('token')
+                    }
+                }).then(async function(response){
                     var _blob = base64.decode(response.data.content);
 
                     if(_blob !== contFile){
+                        var _type = item.path.split('.')
+                        var _typeItem = _type[_type.length- 1];
+                        setFileType(_typeItem);
                         setContFile(_blob);
-                        console.log(_blob);
                         setNameFile(item.path);
                         setIndFile(ind);
-                        setTerminal();
                     }else{
+                        setFileType('');
                         setContFile(null);
                         setIndFile(-1);
                         setNameFile("");
-                        setTerminal([]);
                     }  
                 }).catch();
             }
@@ -75,7 +82,6 @@ export default function Directory(props){
             setContFile(null);
             setIndFile(-1);
             setNameFile("");
-            setTerminal([]);
         }
 
         return(<div className="directory-div">
@@ -100,15 +106,8 @@ export default function Directory(props){
                     Carregando...
                 </div>
             }
-            {(contFile != null)? <div><h1 className="commmits-chart-title">{nameFile}</h1><table className="code">
-            <tbody>
-            {contFile.split('\n').map(function(item, index){
-                return(<tr key={index}>
-                    <td style={(index == contFile.split('\n').length - 1)? {borderBottom: 'none'}:{}}>{index}</td>
-                    <td><pre>{item}</pre></td>
-                </tr>)
-            })}
-            </tbody></table></div>:null}
+            {(contFile != null)? <div><h1 className="commmits-chart-title">{nameFile}</h1><div className="code">
+            <Highlight className={fileType}>{contFile}</Highlight></div></div>:null} 
         </div>);
     }else{
         return(null);
