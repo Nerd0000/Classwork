@@ -245,7 +245,6 @@ module.exports = {
                     password,
                 });
 
-                
                 users.urls = JSON.parse(users.urls);
                 users.classes = JSON.parse(users.classes);
                 users.teams = JSON.parse(users.teams);

@@ -139,21 +139,9 @@ module.exports = {
                 const password = "User@" + generateHex();
                 const id_auth = generateHex();
                 const repos = REPOS_ALL;
-                const urls = [
-                    {
-                        id: 1,
-                        name: 'Perfil',
-                        route: '/profile',
-                        url: USER.url,
-                        icon: 'user-circle'
-                    },
-                    {
-                        id: 2,
-                        name: 'Repositórios',
-                        route: '/profile/git/repos',
-                        url: USER.repos_url,
-                        icon: 'folder-open'
-                    },
+                const urls = [ 
+                    USER.url, 
+                    USER.repos_url 
                 ];
 
                 await axios({

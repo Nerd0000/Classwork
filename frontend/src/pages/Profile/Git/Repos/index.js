@@ -18,6 +18,7 @@ export default function Profile(){
     const [reposGitHub, setReposGitHub] = useState([]);
     const [loading, setLoading] = useState(false);
     const [commitsMax, setCommitsMax] = useState("Carregando...");
+    const [loadCount, setLoadCount] = useState(0);
 
     getReposGitHub();
     checkIfIsAuthenticated(sessionStorage, history, location);
@@ -71,6 +72,8 @@ export default function Profile(){
 
     async function getCommits(url){
         setLoading(true);
+        var _loadCount = loadCount + 1; 
+        setLoadCount(loadCount + 1);
         const REPOS_NAME = url.split('/')[5];
         var ACTION_CHECK = sessionStorage.getItem('actions@'+REPOS_NAME);
         if(ACTION_CHECK == null){
@@ -209,7 +212,9 @@ export default function Profile(){
         if(location.pathname !== "/error"){
             sessionStorage.setItem('action', REPOS_NAME);
             setLoading(false);
-            history.push('/profile/git/repos/commits');
+            if(loadCount === _loadCount - 1){
+                history.push('/profile/git/repos/commits');
+            }
         }else{
             setLoading(false);
         }

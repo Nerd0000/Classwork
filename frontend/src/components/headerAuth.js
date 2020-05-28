@@ -18,18 +18,106 @@ function HeaderAuth(props){
 
     getGitHubUrls();
 
-    var listGitHub = gitHub.map(function(item) {
-        return (<li key={item.id}><button 
-        onClick={() => {openUrl(item.route)}}
-        className="div-item-expansive-list-button">
-        {item.name}<Icons name={item.icon} size={25} color="white"/></button>
-        </li>);
+    var listSessionAccount = gitHub.map(function(item){
+        if(item.session === 'account'){
+            return (<li key={item.id}><button 
+            onClick={() => {openUrl(item.route)}}
+            className="div-item-expansive-list-button">
+            {item.name}<Icons name={item.icon} size={25} color="white"/></button>
+            </li>);
+        }else{
+            return null;
+        }
+    })
+
+    var listSessionClasswork = gitHub.map(function(item){
+        if(item.session === 'classwork'){
+            return (<li key={item.id}><button 
+            onClick={() => {openUrl(item.route)}}
+            className="div-item-expansive-list-button">
+            {item.name}<Icons name={item.icon} size={25} color="white"/></button>
+            </li>);
+        }else{
+            return null;
+        }
+    })
+
+    var listSessionRepos = gitHub.map(function(item){
+        if(item.session === 'repos'){
+            return (<li key={item.id}><button 
+            onClick={() => {openUrl(item.route)}}
+            className="div-item-expansive-list-button">
+            {item.name}<Icons name={item.icon} size={25} color="white"/></button>
+            </li>);
+        }else{
+            return null;
+        }
     })
 
     async function getGitHubUrls(){
         if(canTry){
             setCanTry(false);
-            setGitHub(user.urls);
+
+            var _urls = [
+                {
+                    id: 1,
+                    name: 'Perfil',
+                    route: '/profile',
+                    session: 'account',
+                    url: user.urls[0],
+                    icon: 'user-circle'
+                },
+                {
+                    id: 2,
+                    name: 'Notificações',
+                    route: '/profile/notifications',
+                    session: 'account',
+                    url: user.urls[0],
+                    icon: 'bell'
+                },
+                {
+                    id: 3,
+                    name: 'Configurações',
+                    route: '/profile/config',
+                    session: 'account',
+                    url: user.urls[0],
+                    icon: 'cog'
+                },
+                {
+                    id: 1,
+                    name: 'Turmas',
+                    route: '/class',
+                    session: 'classwork',
+                    url: user.urls[0],
+                    icon: 'chalkboard'
+                },
+                {
+                    id: 2,
+                    name: 'Equipes',
+                    route: '/classes/teams',
+                    session: 'classwork',
+                    url: user.urls[0],
+                    icon: 'users'
+                },
+                {
+                    id: 3,
+                    name: 'Ajuda',
+                    route: '/help',
+                    session: 'classwork',
+                    url: user.urls[0],
+                    icon: 'life-ring'
+                },
+                {
+                    id: 1,
+                    name: 'Públicos',
+                    session: 'repos',
+                    route: '/profile/git/repos',
+                    url: user.urls[1],
+                    icon: 'folder-open'
+                },
+            ]
+
+            setGitHub(_urls);
         }
     }
 
@@ -40,8 +128,6 @@ function HeaderAuth(props){
     function expand(){
         setExpanded(!expanded);
     }
-
-    //console.clear();
 
     return(
         <div> 
@@ -64,19 +150,22 @@ function HeaderAuth(props){
                         </div>
                     </Link>
                     <div className="div-item-expansive-list with-scroll expansive shadow-theme-scroll">
-                        <ul className="shadow-theme"><h3>Classwork</h3></ul>
-                        <ul className="shadow-theme"><h3>GitHub</h3>{listGitHub}</ul>
-
-                        <ul className="shadow-theme"><h3>Opções</h3><li>
-
-                        <Link to="/profile/register" className="div-item-expansive-list-button">
-                            Alterar Credenciais<Icons name="user-lock" size={25} color="white"/></Link>
-
+                        <ul className="shadow-theme"><h3>Conta</h3> 
+                            {listSessionAccount}
+                            {/*<Link to="/profile/register" className="div-item-expansive-list-button">
+                            Alterar Credenciais<Icons name="user-lock" size={25} color="white"/></Link>*/}
+                        </ul>
+                        <ul className="shadow-theme"><h3>Classwork</h3>
+                            {listSessionClasswork}
+                            <a to="/profile/register" className="div-item-expansive-list-button">
+                            Discord<Icons name="discord" size={25} color="white"/></a>
+                        </ul>
+                        <ul className="shadow-theme"><h3>Repositórios</h3>{listSessionRepos}</ul>
+                        <ul className="shadow-theme"><li>
                             <button onClick={() => {
                                 logoutGit(sessionStorage, history, location);
                             }} className="div-item-expansive-list-button red">
                             Sair<Icons name="exit" size={25} color="white"/></button>
-
                         </li></ul>
                     </div>
                 </div>
