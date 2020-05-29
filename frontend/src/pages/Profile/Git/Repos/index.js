@@ -42,13 +42,15 @@ export default function Profile(){
         }
 
         if(description === null || description === ""){
-            description="Sem descrição"
+            description = "Sem descrição";
         }
 
-        return (<li key={item.id}><button className="shadow-theme-lit" onClick={() => {getCommits(item.commits_url)}}>
+        return (<li key={item.id}><button className={(sessionStorage.getItem('token') != null)? "shadow-theme-lit":"shadow-theme-lit-red"} onClick={() => {
+            if(sessionStorage.getItem('token') != null){getCommits(item.commits_url)}}
+        }>
         <div>
-            <h3 className="repos-name">{name}</h3>
-            <h4 className="repos-description">{description}</h4>
+            <h3 className={(sessionStorage.getItem('token') != null)? "repos-name":"repos-name-red"}>{name}</h3>
+            <h4 className={(sessionStorage.getItem('token') != null)? "repos-description":"repos-description-red"}>{description}</h4>
         </div>
         <div className="repos-div-language">
             <IconsLanguage name={item.language} size={25}/>
@@ -224,7 +226,10 @@ export default function Profile(){
         <div>
             <HeaderAuth title='Repositório'/>
             <div className="div-global-page with-scroll header-is-auth">
-                <div className="container-box-list">
+                {(sessionStorage.getItem('token') != null)? null:<div className="warning-session-title">
+                    <h1>Essa sessão só está disponível com a autenticação do Github</h1>
+                </div>}
+                <div className={(sessionStorage.getItem('token') != null)? "container-box-list":"container-box-list container-box-list-red"}>
                     <ul>{reposListGitHub}</ul>
                 </div>
             </div>

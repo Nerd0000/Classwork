@@ -50,6 +50,11 @@
     color: white;
 }
 
+.container-box-list-red ul li button:hover {
+    transition: background-color .8s, box-shadow .8s;
+    background-color: rgb(180, 70, 70);
+}
+
 .repos-name {
     text-transform: capitalize;
     font-size: 25px;
@@ -57,11 +62,25 @@
     color: steelblue;
 }
 
+.repos-name-red {
+    text-transform: capitalize;
+    font-size: 25px;
+    margin: 20px 20px 0px 20px;
+    color: rgb(180, 70, 70);
+}
+
 .repos-description {
     font-size: 15px;
     text-align: justify;
     margin: 2px 20px 0px 20px;
     color: rgb(1, 53, 95);
+}
+
+.repos-description-red {
+    font-size: 15px;
+    text-align: justify;
+    margin: 2px 20px 0px 20px;
+    color: rgb(95, 1, 1);
 }
 
 .repos-div-language {

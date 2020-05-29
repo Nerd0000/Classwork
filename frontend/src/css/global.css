@@ -73,3 +73,12 @@ input[type=number] {
     margin: 100px 150px 100px 50px;
 }
 
+.warning-session-title {
+    color: white;
+    background-color: rgb(180, 70, 70);
+}
+
+.warning-session-title h1{
+    text-align: center;
+    padding: 8px;
+}

@@ -157,7 +157,7 @@ function HeaderAuth(props){
                         </ul>
                         <ul className="shadow-theme"><h3>Classwork</h3>
                             {listSessionClasswork}
-                            <a href="https://discord.gg/NcqjJM9" target="_blank" className="div-item-expansive-list-button">
+                            <a href="https://discord.gg/NcqjJM9" rel="noopener noreferrer" target="_blank" className="div-item-expansive-list-button">
                             Discord<Icons name="discord" size={25} color="white"/></a>
                         </ul>
                         <ul className="shadow-theme"><h3>Repositórios</h3>{listSessionRepos}</ul>

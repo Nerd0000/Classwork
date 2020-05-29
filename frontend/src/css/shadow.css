@@ -27,6 +27,10 @@
     box-shadow: 0 5px 5px 0 rgb(170, 213, 248, 0.5),0px 5px 15px 0 rgba(152, 208, 253, 0.6);
 }
 
+.shadow-theme-lit-red:hover {
+    box-shadow: 0 5px 5px 0 rgb(180, 70, 70, 0.5),0px 5px 15px 0 rgb(180, 70, 70, 0.6);
+}
+
 .shadow-theme-red:hover {
     box-shadow: 0 5px 5px 0 rgba(180, 70, 70, 0.5),0px 5px 15px 0 rgba(180, 70, 70, 0.6);
 }
