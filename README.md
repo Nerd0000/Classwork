@@ -57,4 +57,4 @@ REACT_APP_PORT_BACK=3333
 REACT_APP_PORT_FRONT=3000
 REACT_APP_DB_IDENTITY=[RECOMENDADO]
 ```
-  
+Obs: Tanto a pasta Frontend quanto a Backend devem possuir esse arquivo.
