@@ -41,6 +41,8 @@ Em desenvolvimento...
   - [ ] Página da turma;
   - [ ] Página de criação e listagem de equipes;
   - [ ] Página da equipe.
+  - [ ] Formatar arquivos readme
+  - [ ] Mostrar readme formatado ou não no menu de arquivos
   
 - Mobile 
   - Aguardando conclusão das funcionalidades do Backend e Frontend;
