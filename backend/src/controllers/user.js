@@ -93,7 +93,7 @@ module.exports = {
                 users.repos = JSON.parse(users.repos);
                 console.log(dateReturn() + `User [${queryId}] listed!`);
             }else if(queryGitId != null){
-                users = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", queryGitId).first();
+                users = await connection('users').select(['id', 'git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", queryGitId).first();
 
                 if(users == null){
                     console.log(dateReturn() + `User [${queryGitId}] is not defined!`);
@@ -312,5 +312,48 @@ module.exports = {
             });
         }
     },
+    async addClass(req, res) {
+        const { git_id } = req.body;
+        var classes = JSON.stringify(req.body.classes);
+        console.log(classes);
+        var users = null;
+        const { auth } = req.headers;
 
+        if(internalSecurity.checkIsAuthorized(auth)){
+            if(git_id != null){
+                users = await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", git_id).first();
+                if(users == null){
+                    console.log(dateReturn() + `User [${git_id}] is not defined!`);
+                    return res.status(404).json({
+                        "message": "Operação inválida",
+                        "origin": "Database",
+                    });
+                }
+                
+                await connection('users').select(['git_id','id_auth','type','real_name','name','avatar','classes','teams','repos','urls']).where("git_id", git_id).update({
+                    classes,
+                });
+
+                users.urls = JSON.parse(users.urls);
+                users.classes = JSON.parse(users.classes);
+                users.teams = JSON.parse(users.teams);
+                users.repos = JSON.parse(users.repos);
+
+                console.log(dateReturn() + `User [${git_id}] updated!`);
+                return res.status(200).json(users);
+            }else{
+                console.log(dateReturn() + `User [${git_id}] is not defined!`);
+                return res.status(404).json({
+                    "message": "Operação inválida",
+                    "origin": "Database",
+                });
+            }
+        }else{
+            console.log(dateReturn() + `Unauthorized request has been blocked!`);
+            return res.status(203).json({
+                    "message": "Request não autorizado!",
+                    "origin": "Internal security",
+            });
+        }
+    },
 }

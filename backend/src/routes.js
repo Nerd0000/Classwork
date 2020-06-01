@@ -12,6 +12,7 @@ routes.post('/user/create', userController.create);
 routes.post('/user/update', userController.update);
 routes.post('/user/updateCredentials', userController.updateCredentials);
 routes.post('/user/updateRepos', userController.updateRepos);
+routes.post('/user/classes/add', userController.addClass);
 routes.post('/login', userController.login);
 routes.delete('/user/delete', userController.delete);
 routes.get('/users', userController.list);
@@ -19,7 +20,9 @@ routes.get('/users', userController.list);
 //Class
 routes.post('/class/create', classController.create);
 routes.post('/class/update', classController.update);
+routes.post('/class/members/add', classController.addMembers);
 routes.delete('/class/delete', classController.delete);
+routes.get('/class/members', classController.getMembers);
 routes.get('/classes', classController.list);
 
 //Actions 

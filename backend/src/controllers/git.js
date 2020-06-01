@@ -143,6 +143,7 @@ module.exports = {
                     USER.url, 
                     USER.repos_url 
                 ];
+                const classes = [];
 
                 await axios({
                     method: 'post',
@@ -157,7 +158,8 @@ module.exports = {
                         password,
                         email,
                         urls,
-                        repos
+                        repos,
+                        classes
                     },
                     headers: {
                         'auth': process.env.REACT_APP_DB_IDENTITY,
